@@ -31,7 +31,11 @@ for that.
 
 ## Running locally
 
+Requires [Node.js](https://nodejs.org/) (v18+) — npm comes bundled with it.
+
 ```bash
+git clone https://github.com/pratik-patil-01/cf-weak-spot-finder.git
+cd cf-weak-spot-finder
 npm install
 npm run dev
 ```
