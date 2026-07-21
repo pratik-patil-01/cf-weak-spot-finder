@@ -49,6 +49,12 @@ export default function App() {
       );
 
       const tagStrengths = analyzeTagStrength(submissions);
+      if (Object.keys(tagStrengths).length === 0) {
+        setErrorMsg("No submissions found for this handle yet — solve a few problems on Codeforces first!");
+        setStatus("error");
+        return;
+      }
+      
       const ranked = rankWeakTags(tagStrengths);
       const recs = recommendProblems(ranked, problemSet, solvedIds, info.rating || 1200);
 
@@ -119,23 +125,29 @@ export default function App() {
             </div>
 
             <p className="section-label"># recommended problems</p>
-            <ul className="problem-list">
-              {recommendations.map((p) => (
-                <li key={`${p.contestId}${p.index}`} className="problem-row">
-                  <a
-                    href={`https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {p.contestId}
-                    {p.index} — {p.name}
-                  </a>
-                  <span className="dim">
-                    {p.rating} · {p.tags.slice(0, 3).join(", ")}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {recommendations.length === 0 ? (
+              <p className="dim">
+                No unsolved problems found in your growth range for these tags right now — try a wider rating range or check back after your next contest.
+              </p>
+            ) : (
+              <ul className="problem-list">
+                {recommendations.map((p) => (
+                  <li key={`${p.contestId}${p.index}`} className="problem-row">
+                    <a
+                      href={`https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {p.contestId}
+                      {p.index} — {p.name}
+                    </a>
+                    <span className="dim">
+                      {p.rating} · {p.tags.slice(0, 3).join(", ")}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
       </div>
